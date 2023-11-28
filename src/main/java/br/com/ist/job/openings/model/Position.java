@@ -1,7 +1,9 @@
 package br.com.ist.job.openings.model;
 
 import br.com.ist.job.openings.model.enums.PositionType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +30,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of="id", callSuper = true)
 @Entity
 @Table(name = "tbl_postition")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id"
+)
 public class Position  extends SuperEntity implements Serializable  {
 
     @NotEmpty(message = "{position.name.required}")
@@ -41,11 +47,12 @@ public class Position  extends SuperEntity implements Serializable  {
     private BigDecimal maxSalary;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date validFrom;
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date validUntil;
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "position")
     private List<ApplicantPosition> applicantsPosition;
 }

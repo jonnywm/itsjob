@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface PositionRepository extends SuperRepo<Position> {
 
     Page<Position> findByNameContainingAndValidFromBeforeAndValidUntilAfterAndActiveIsTrue(String name, Date from, Date until, Pageable pageable);
+    
+    Page<Position> findByValidFromBeforeAndValidUntilAfterAndActiveIsTrue(Date from, Date until, Pageable pageable);
 }

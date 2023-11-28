@@ -2,6 +2,7 @@ package br.com.ist.job.openings.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
@@ -24,11 +25,9 @@ public class ApplicantPosition extends SuperEntity implements Serializable {
     private BigDecimal salaryExpectation;
     private boolean salaryOutRanged;
 
-    @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Applicant applicant;
 
-    @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Position position;
 }

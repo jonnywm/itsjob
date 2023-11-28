@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  *
@@ -49,5 +51,17 @@ public class ApplicationControllerAdvice {
         return APIErrorsDTO.build(cve.getConstraintViolations()
                 .stream().map(constr -> constr.getMessage())
                 .collect(Collectors.toList()));
+    }
+    
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public APIErrorsDTO handleHttpMessageNotReadableException(HttpMessageNotReadableException hmnre) {
+        return APIErrorsDTO.build(hmnre.getMessage());
+    }
+    
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public APIErrorsDTO handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException hmnre) {
+        return APIErrorsDTO.build(hmnre.getMessage());
     }
 }

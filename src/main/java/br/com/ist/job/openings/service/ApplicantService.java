@@ -54,7 +54,8 @@ public class ApplicantService extends SuperService<Applicant> implements Seriali
                 applicantDB.getApplicantPositions().addAll(applicant.getApplicantPositions());
             }
         }
-        return super.save(applicantDB);
+        super.save(applicantDB);
+        return repository.findById(applicantDB.getId()).get();
     }
 
     @Override
